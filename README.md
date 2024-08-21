@@ -18,6 +18,9 @@ Ejercicio 3
 
 ![image](https://github.com/user-attachments/assets/b11a13f0-728d-441d-919c-b6371af11451)
 
+![image](https://github.com/user-attachments/assets/877c349d-1036-4644-83ec-ac6a0fe3c9c7)
+
+
 Ejercicio 4
 
 ![image](https://github.com/user-attachments/assets/8eaf77f0-1856-45ae-94dc-65e051fc577f)
