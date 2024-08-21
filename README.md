@@ -4,6 +4,9 @@ Ejercicio 1
 
 ![image](https://github.com/user-attachments/assets/757bb81a-d89d-4ca8-a20b-3f8260ac10c8)
 
+![image](https://github.com/user-attachments/assets/7412dfce-299d-4a4b-a4a2-7eb069a1e924)
+
+
 Ejercicio 2
 
 ![image](https://github.com/user-attachments/assets/3b79fd32-200a-421f-8b0d-7a331c091bc3)
