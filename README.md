@@ -11,6 +11,9 @@ Ejercicio 2
 
 ![image](https://github.com/user-attachments/assets/3b79fd32-200a-421f-8b0d-7a331c091bc3)
 
+![image](https://github.com/user-attachments/assets/9c44e36b-f25e-429d-a4de-50a86e507c6d)
+
+
 Ejercicio 3
 
 ![image](https://github.com/user-attachments/assets/b11a13f0-728d-441d-919c-b6371af11451)
