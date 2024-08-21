@@ -27,11 +27,16 @@ Ejercicio 4
 
 Ejercicio 5
 
+PAR
+
 ![image](https://github.com/user-attachments/assets/aef7887b-fcc1-4620-8660-9d32db8aef6c)
 
+IMPAR
+
+![image](https://github.com/user-attachments/assets/d274afc2-72cd-4aa8-88eb-5a1596a3140a)
 
 
 
-Segunda imagen con los resultados opuestos
 
-![image](https://github.com/user-attachments/assets/bdf9df5b-9bc8-4dc4-86f1-eede25f778e7)
+
+
