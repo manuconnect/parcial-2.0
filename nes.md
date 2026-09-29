@@ -50,3 +50,22 @@ flowchart TD
         Rx --> Mask
         Mask -- "Si el bit aislado es '1'" --> Accion
     end
+## 4. Implementación en Software: Constantes de Enmascaramiento en C
+
+Para aplicar el concepto de enmascaramiento en el código del juego, definimos constantes usando los valores hexadecimales de nuestro mapa.
+
+```c
+// 1. Definición de la dirección de memoria asignada al mando NES 
+// Esta es la dirección 0x450000 que el hardware FPGA expone a la CPU según el diagrama
+#define NES_PORT_ADDR 0x450000
+#define IO_NES        (*((volatile uint32_t *)NES_PORT_ADDR))
+
+// 2. Constantes de enmascaramiento
+#define NES_MASK_A      0x01  // Binario: 0000 0001
+#define NES_MASK_B      0x02  // Binario: 0000 0010
+#define NES_MASK_SELECT 0x04  // Binario: 0000 0100
+#define NES_MASK_START  0x08  // Binario: 0000 1000
+#define NES_MASK_UP     0x10  // Binario: 0001 0000
+#define NES_MASK_DOWN   0x20  // Binario: 0010 0000
+#define NES_MASK_LEFT   0x40  // Binario: 0100 0000
+#define NES_MASK_RIGHT  0x80  // Binario: 1000 0000
