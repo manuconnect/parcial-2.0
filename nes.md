@@ -33,7 +33,7 @@ flowchart TD
 
     subgraph FASE1 [FASE 1: HARDWARE - Placa FPGA]
         direction TB
-        Reg[Registro Receptor\nAcomoda los bits: 7 6 5 4 3 2 1 0]
+        Reg[Registro Receptor]
         Inv[Inversor de Lógica]
         
         Reg --> Inv
