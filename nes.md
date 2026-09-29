@@ -1,55 +1,46 @@
-# Mapa de Bits y Decodificación del Controlador NES
+# Control NES
 
-## 1. Descripción de la Trama
-El controlador de NES no envía comandos complejos ni requiere inicialización. Responde a un pulso de `LATCH` capturando el estado de sus 8 botones y los transmite secuencialmente a través del pin `DATA` mediante 7 pulsos de `CLOCK`. 
+Recibe el protocolo serial del control NES (latch, clock, data) y expone el estado de los 8 botones al procesador como un registro de lectura, mapeado en `0x450000 - 0x45FFFF`.
 
-El resultado es una trama plana de **8 bits (1 byte)**. El hardware original opera con lógica negativa (*Active LOW*), pero en nuestro módulo de lectura en Verilog, los datos se invierten (`~registro_temp`) para que un `1` lógico represente un botón presionado (*Active HIGH*).
+## Contrato de puertos
 
-## 2. Mapa del Controlador (Bit Mapping)
-El procesador lee los bits en formato binario estándar (de derecha a izquierda, donde el Bit 0 es el Menos Significativo o LSB). El orden estricto en el que el chip CD4021B entrega los datos define el siguiente mapa:
+| Señal | Dirección | Descripción |
+|---|---|---|
+| `d_in` | entrada | Datos que escribe el CPU (sin uso: este periférico es solo lectura) |
+| `cs` | entrada | Chip select — activo cuando `mem_addr` cae en el rango del NES |
+| `addr` | entrada | Offset dentro del rango del periférico |
+| `rd` | entrada | Solicitud de lectura del CPU |
+| `wr` | entrada | Solicitud de escritura del CPU (sin uso) |
+| `d_out` | salida | Estado actual de los 8 botones |
 
-| Posición de llegada | Índice del Bit | Botón Físico | Valor Presionado (Invertido) |
-| :--- | :--- | :--- | :--- |
-| 1er bit (En el Latch) | **Bit 0** | A | `1` |
-| 2do bit (Clock 1) | **Bit 1** | B | `1` |
-| 3er bit (Clock 2) | **Bit 2** | Select | `1` |
-| 4to bit (Clock 3) | **Bit 3** | Start | `1` |
-| 5to bit (Clock 4) | **Bit 4** | Arriba (Up) | `1` |
-| 6to bit (Clock 5) | **Bit 5** | Abajo (Down) | `1` |
-| 7mo bit (Clock 6) | **Bit 6** | Izquierda (Left) | `1` |
-| 8vo bit (Clock 7) | **Bit 7** | Derecha (Right) | `1` |
+## Mapa de registros
 
-## 3. Ejemplo de Lectura
-Si se presiona el botón **Start**, el bit correspondiente es el Bit 3. En formato binario (leyendo del Bit 7 al Bit 0), el byte completo se visualizará en la memoria como:
-`00001000`
+| Offset | Registro | Acceso | Descripción |
+|---|---|---|---|
+| `0x00` | `NES_BUTTONS` | Lectura | Byte con el estado de los 8 botones (1 = presionado) |
 
-Si se presiona el botón **Abajo (Down)**, el bit correspondiente es el Bit 5. El byte completo se visualizará como:
-`00100000`
+### Distribución de bits
 
-## 4. Implementación en Hardware (Verilog)
-Para traducir esta trama cruda de 8 bits en señales individuales útiles para el sistema SoC (FemtoRV32), se utiliza el siguiente decodificador combinacional. Este módulo extrae cada bit de la trama y lo asigna a un cable individual.
+| Bit | Botón |
+|---|---|
+| 0 | A |
+| 1 | B |
+| 2 | Select |
+| 3 | Start |
+| 4 | Arriba |
+| 5 | Abajo |
+| 6 | Izquierda |
+| 7 | Derecha |
 
-```verilog
-module decodificador_nes (
-    input  wire [7:0] trama_botones, // El byte final recibido e invertido
-    output wire btn_A,
-    output wire btn_B,
-    output wire btn_Select,
-    output wire btn_Start,
-    output wire btn_Up,
-    output wire btn_Down,
-    output wire btn_Left,
-    output wire btn_Right
-);
+*El orden de los bits es una decisión de implementación — aquí se sigue el mismo orden en que salen del control, que es el más simple.*
 
-    // Mapeo directo de bits a botones
-    assign btn_A      = trama_botones[0];
-    assign btn_B      = trama_botones[1];
-    assign btn_Select = trama_botones[2];
-    assign btn_Start  = trama_botones[3];
-    assign btn_Up     = trama_botones[4];
-    assign btn_Down   = trama_botones[5];
-    assign btn_Left   = trama_botones[6];
-    assign btn_Right  = trama_botones[7];
+## Protocolo del control (latch / clock / data)
 
-endmodule
+El control NES no manda los botones por separado: tiene un registro de desplazamiento interno que hay que "vaciar" bit a bit.
+
+1. **Latch**: el FPGA sube `LATCH` y lo baja — le dice al control "congela el estado actual de tus 8 botones".
+2. **Primer bit**: justo después del latch, `DATA` ya trae el estado del botón A, en lógica activa en bajo (0 = presionado).
+3. **Clock**: cada pulso de `CLOCK` avanza el registro un bit, en este orden fijo: A, B, Select, Start, Arriba, Abajo, Izquierda, Derecha.
+4. El módulo captura esos 8 bits, los invierte (para que 1 = presionado sea más intuitivo) y los deja listos en `NES_BUTTONS`.
+
+Este ciclo se repite periódicamente (por ejemplo, una vez por cuadro) para mantener el estado actualizado.
