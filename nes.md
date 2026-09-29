@@ -34,7 +34,7 @@ flowchart TD
     subgraph FASE1 [FASE 1: HARDWARE - Placa FPGA]
         direction TB
         Reg[Registro Receptor\nAcomoda los bits: 7 6 5 4 3 2 1 0]
-        Inv[Inversor de Lógica\nConvierte '0' físico a '1' lógico]
+        Inv[Inversor de Lógica]
         
         Reg --> Inv
     end
@@ -44,8 +44,8 @@ flowchart TD
     subgraph FASE2 [FASE 2: SOFTWARE - CPU / SoC]
         direction TB
         Rx[Recepción del Byte\nEj: 00001000]
-        Mask{Enmascaramiento\nAplica filtro Hexadecimal\nEj: Máscara 0x08}
-        Accion([Decisión / Acción\nEj: Iniciar el juego])
+        Mask{Enmascaramiento\nAplica filtro Hexadecimal}
+        Accion([Decisión / Acción])
         
         Rx --> Mask
         Mask -- "Si el bit aislado es '1'" --> Accion
