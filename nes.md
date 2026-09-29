@@ -49,7 +49,7 @@ flowchart TD
         
         Rx --> Mask
         Mask -- "Si el bit aislado es '1'" --> Accion
-    end ```
+    end ’’’
 
 
 ## 3. Implementación en Software: Constantes de Enmascaramiento en C
