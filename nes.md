@@ -58,7 +58,7 @@ Para aplicar el concepto de enmascaramiento en el código del juego, definimos c
 
 ```c
 // 1. Definición de la dirección de memoria asignada al mando NES 
-// Esta es la dirección 0x450000 que el hardware FPGA expone a la CPU según el diagrama
+
 #define NES_PORT_ADDR 0x450000
 #define IO_NES        (*((volatile uint32_t *)NES_PORT_ADDR))
 
