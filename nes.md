@@ -50,7 +50,9 @@ flowchart TD
         Rx --> Mask
         Mask -- "Si el bit aislado es '1'" --> Accion
     end
-## 4. Implementación en Software: Constantes de Enmascaramiento en C
+
+
+## 3. Implementación en Software: Constantes de Enmascaramiento en C
 
 Para aplicar el concepto de enmascaramiento en el código del juego, definimos constantes usando los valores hexadecimales de nuestro mapa.
 
