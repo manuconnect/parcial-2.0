@@ -72,6 +72,7 @@ Para aplicar el concepto de enmascaramiento en el código del juego, definimos c
 #define NES_MASK_LEFT   0x40  // Binario: 0100 0000
 #define NES_MASK_RIGHT  0x80  // Binario: 1000 0000
 
+```mermaid
 flowchart LR
     %% Definición de señales externas
     CLK([Reloj del Sistema]) --> FPGA
@@ -88,7 +89,7 @@ flowchart LR
         PISO[Chip CD4021B]
     end
 
-    %% Salida hacia el procesador (Reemplaza a los LEDs de la imagen de referencia)
+    %% Salida hacia el procesador 
     FPGA == "Datos 32-bits\n(Dirección 0x450000)" ===> CPU[(CPU FemtoRV32\nSoftware en C)]
 
     %% Conexiones de Hardware entre FPGA y Mando
