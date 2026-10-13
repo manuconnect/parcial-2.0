@@ -71,3 +71,27 @@ Para aplicar el concepto de enmascaramiento en el código del juego, definimos c
 #define NES_MASK_DOWN   0x20  // Binario: 0010 0000
 #define NES_MASK_LEFT   0x40  // Binario: 0100 0000
 #define NES_MASK_RIGHT  0x80  // Binario: 1000 0000
+
+flowchart LR
+    %% Definición de señales externas
+    CLK([Reloj del Sistema]) --> FPGA
+
+    %% Bloque Principal de la FPGA
+    subgraph FPGA ["Tu Diseño (FPGA)"]
+        direction TB
+        Verilog[Módulo Verilog\nLector NES]
+    end
+
+    %% Bloque del Controlador NES
+    subgraph NES ["Controlador NES"]
+        direction TB
+        PISO[Chip CD4021B]
+    end
+
+    %% Salida hacia el procesador (Reemplaza a los LEDs de la imagen de referencia)
+    FPGA == "Datos 32-bits\n(Dirección 0x450000)" ===> CPU[(CPU FemtoRV32\nSoftware en C)]
+
+    %% Conexiones de Hardware entre FPGA y Mando
+    Verilog -- "LATCH" ---> NES
+    Verilog -- "CLOCK (Pulse)" ---> NES
+    NES -- "DATA" ---> Verilog
