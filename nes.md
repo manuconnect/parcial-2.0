@@ -71,6 +71,7 @@ Para aplicar el concepto de enmascaramiento en el código del juego, definimos c
 #define NES_MASK_DOWN   0x20  // Binario: 0010 0000
 #define NES_MASK_LEFT   0x40  // Binario: 0100 0000
 #define NES_MASK_RIGHT  0x80  // Binario: 1000 0000
+```
 
 ```mermaid
 flowchart LR
