@@ -97,3 +97,24 @@ flowchart LR
     Verilog -- "LATCH" ---> NES
     Verilog -- "CLOCK (Pulse)" ---> NES
     NES -- "DATA" ---> Verilog
+```
+
+```mermaid
+stateDiagram-v2
+    %% Definición de estados
+    IDLE : 1. REPOSO
+    LATCH : 2. CAPTURA (Activar Latch)
+    PULSE_CLK : 3. PEDIR BOTÓN (Activar Clock)
+    READ_DATA : 4. LEER Y GUARDAR (Leer Data)
+    DONE : 5. ENTREGAR (Acomodar en 0x450000)
+
+    %% Flujo lógico
+    [*] --> IDLE
+    IDLE --> LATCH : Orden de inicio
+    LATCH --> PULSE_CLK : Foto tomada
+    
+    PULSE_CLK --> READ_DATA : Empujón enviado
+    READ_DATA --> PULSE_CLK : Faltan botones (Bucle x8)
+    
+    READ_DATA --> DONE : Los 8 botones leídos
+    DONE --> IDLE : Datos listos, reiniciar
